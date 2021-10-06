@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MemSto</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="create_new_account"><u>create new account</u></string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="name">Name</string>
+    <string name="webclient_id">614668962152-a9frqofnu64eke4gac3cmruf61efni8m.apps.googleusercontent.com</string>
+    <string name="hello_string">Hello, %1$s!</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="uploading">Uploading</string>
+    <string name="uploaded">Uploaded</string>
+    <string name="error_occurred">Error Occurred</string>
+    <string name="memory">Memory</string>
+    <string name="your_memories_will_appear_here">Your memories will appear here.</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="chats">Chats</string>
+</resources>

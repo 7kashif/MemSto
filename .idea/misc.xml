@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/add_pic_bg.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/cursor.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/custom_progress.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_add.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_back.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_cancel.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_chat.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_edit.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_google.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_image_symbol.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_loading_pb.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_logout.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_person.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_person_outline.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_signout.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/memory_text_bg.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/activity_main.xml" value="0.18645833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/add_image_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/contact_list_item.xml" value="0.2015625" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/contacts_list_fragment.xml" value="0.2015625" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/edit_profile_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/home_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/memories_list_item.xml" value="0.2015625" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/signin_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/signup_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/users_fragment.xml" value="0.2015625" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/users_list_item.xml" value="0.2015625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

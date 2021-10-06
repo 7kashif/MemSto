@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gable_green"
+    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/ivNewImage"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_image_symbol"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/btnAddNewImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintBottom_toBottomOf="@id/ivNewImage"
+        app:layout_constraintEnd_toEndOf="@id/ivNewImage"
+        app:tint="@color/calico"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/memoryInput"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:hint="@string/memory"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxStrokeColor="@color/calico"
+        app:hintTextColor="@color/calico"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivNewImage">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMemory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/calico"
+            android:textCursorDrawable="@drawable/cursor"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnUploadImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/calico"
+        android:text="@string/upload_image"
+        android:textAllCaps="false"
+        android:textColor="@color/gable_green"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memoryInput" />
+
+    <ProgressBar
+        android:id="@+id/pbCustom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:indeterminateDrawable="@drawable/custom_progress"
+        android:indeterminateTint="@color/calico"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@id/btnUploadImage"
+        app:layout_constraintTop_toBottomOf="@id/btnUploadImage" />
+
+    <TextView
+        android:id="@+id/tvUploading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/uploading"
+        android:textColor="@color/calico"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/pbImageUploading"
+        app:layout_constraintStart_toEndOf="@id/pbCustom"
+        app:layout_constraintTop_toBottomOf="@id/btnUploadImage" />
+
+    <ProgressBar
+        android:id="@+id/pbImageUploading"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:progressTint="@color/calico"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/tvUploading"
+        tools:progress="80" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
