@@ -9,4 +9,5 @@ object FirebaseObject {
     val firebaseAuth = Firebase.auth
     val storageRef = Firebase.storage.reference
     val usersReference = Firebase.firestore.collection("users")
+    val chatsReference = Firebase.firestore.collection("chats")
 }

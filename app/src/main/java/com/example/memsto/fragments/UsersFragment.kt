@@ -32,6 +32,7 @@ class UsersFragment : Fragment() {
         return binding.root
     }
 
+
     private fun setUpUsersRv() = binding.rvUsers.apply {
         adapter = usersAdapter
         layoutManager = LinearLayoutManager(activity)
@@ -41,6 +42,11 @@ class UsersFragment : Fragment() {
     private fun addClickListeners() {
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+        usersAdapter.onItemClickListener {
+            viewModel.chatUser = it
+            viewModel.findChatCollection()
+            this.findNavController().navigate(UsersFragmentDirections.actionUsersFragmentToChatFragment())
         }
     }
 

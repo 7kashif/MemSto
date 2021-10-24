@@ -32,7 +32,7 @@ class SharedViewModel : ViewModel() {
         getAllMemories()
     }
 
-    private fun getUserData() {
+    fun getUserData() {
         FirebaseObject.firebaseAuth.currentUser?.let {
             _displayName.value = it.displayName
             _profilePicUri.value = it.photoUrl

@@ -15,21 +15,31 @@
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_image_symbol.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_loading_pb.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_logout.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_memory_photo.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_message.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_message_tail.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_person.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_person_outline.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_signout.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/memory_text_bg.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/message_bg.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/message_tail.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/received_message_bg.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/activity_main.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/add_image_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/chat_fragment.xml" value="0.22" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/contact_list_item.xml" value="0.2015625" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/contacts_list_fragment.xml" value="0.2015625" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/drawer_header_layout.xml" value="0.2015625" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/edit_profile_fragment.xml" value="0.22" />
-        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/home_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/home_fragment.xml" value="0.25" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/memories_list_item.xml" value="0.2015625" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/message_item.xml" value="0.22" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/signin_fragment.xml" value="0.22" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/signup_fragment.xml" value="0.22" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/users_fragment.xml" value="0.2015625" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/users_list_item.xml" value="0.2015625" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/menu/drawer_menu.xml" value="0.2015625" />
       </map>
     </option>
   </component>

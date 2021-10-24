@@ -77,6 +77,7 @@ class SignUpFragment : Fragment() {
             binding.progressBar.visibility = View.INVISIBLE
         })
     }
+
     private fun checkData() {
         if (binding.etPassword.text?.isNotEmpty() == true)
             password = binding.etPassword.text.toString().trim()

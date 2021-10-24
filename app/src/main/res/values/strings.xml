@@ -18,4 +18,10 @@
     <string name="your_memories_will_appear_here">Your memories will appear here.</string>
     <string name="confirm_password">Confirm password</string>
     <string name="chats">Chats</string>
+    <string name="write_message">Write a message…</string>
+    <string name="test_message">This is a test message to test the width and height correction of the message bubble.</string>
+    <string name="add_image">Add Image</string>
+    <string name="sign_out">Sign out</string>
+    <string name="save_changes">Save changes</string>
+    <string name="set_time">%1$s,%2$s</string>
 </resources>

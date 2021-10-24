@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/drawerProfilePic"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@drawable/user"/>
+    <TextView
+        android:id="@+id/drawerUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gable_green"
+        android:textSize="20sp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="@id/drawerProfilePic"
+        app:layout_constraintStart_toEndOf="@id/drawerProfilePic"
+        app:layout_constraintBottom_toBottomOf="@id/drawerProfilePic"
+        tools:text="Fredric"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

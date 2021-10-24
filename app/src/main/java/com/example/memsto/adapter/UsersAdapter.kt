@@ -10,18 +10,19 @@ import coil.transform.CircleCropTransformation
 import com.example.memsto.dataClasses.UserItem
 import com.example.memsto.databinding.UsersListItemBinding
 
-class UsersAdapter : ListAdapter<UserItem,UsersAdapter.UserViewHolder>(diffCallBack) {
+class UsersAdapter : ListAdapter<UserItem, UsersAdapter.UserViewHolder>(diffCallBack) {
 
-    inner class UserViewHolder(val binding : UsersListItemBinding):RecyclerView.ViewHolder(binding.root)
+    inner class UserViewHolder(val binding: UsersListItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     companion object {
         private val diffCallBack = object : DiffUtil.ItemCallback<UserItem>() {
             override fun areItemsTheSame(oldItem: UserItem, newItem: UserItem): Boolean {
-                return oldItem.uid==newItem.uid
+                return oldItem.uid == newItem.uid
             }
 
             override fun areContentsTheSame(oldItem: UserItem, newItem: UserItem): Boolean {
-                return oldItem==newItem
+                return oldItem == newItem
             }
         }
     }
@@ -47,7 +48,17 @@ class UsersAdapter : ListAdapter<UserItem,UsersAdapter.UserViewHolder>(diffCallB
                     crossfade(500)
                     transformations(CircleCropTransformation())
                 }
+                root.setOnClickListener {
+                    itemClickListener?.let {
+                        it(item)
+                    }
+                }
             }
         }
+    }
+
+    private var itemClickListener: ((UserItem) -> Unit)? = null
+    fun onItemClickListener(listener:((UserItem)->Unit)) {
+        itemClickListener = listener
     }
 }

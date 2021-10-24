@@ -79,6 +79,18 @@
         <action
             android:id="@+id/action_usersFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_usersFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.memsto.fragments.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/chat_fragment">
+        <action
+            android:id="@+id/action_chatFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
     </fragment>
 
 </navigation>

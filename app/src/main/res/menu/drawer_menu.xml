@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuChats"
+        android:title="@string/chats"
+        android:icon="@drawable/ic_chat"/>
+    <item
+        android:id="@+id/menuAddImage"
+        android:title="@string/add_image"
+        android:icon="@drawable/ic_add"/>
+    <item
+        android:id="@+id/menuSignOut"
+        android:title="@string/sign_out"
+        android:icon="@drawable/ic_signout"/>
+
+</menu>
