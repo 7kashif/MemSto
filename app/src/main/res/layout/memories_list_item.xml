@@ -27,7 +27,7 @@
             android:textSize="18sp"
             android:gravity="center_horizontal"
             android:padding="8dp"
-            android:maxLines="2"
+            android:singleLine="true"
             android:layout_alignBottom="@id/ivMemoryImage"/>
 
     </RelativeLayout>

@@ -38,7 +38,8 @@ class MemoriesAdapter:ListAdapter<MemoryItem,MemoriesAdapter.MemoryViewHolder>(d
 
         holder.binding.apply {
             holder.itemView.apply {
-                tvMemory.text = item.memory
+                val memory = item.memory.substring(0,item.memory.lastIndexOf('-'-2))
+                tvMemory.text = memory
                 ivMemoryImage.load(item.imageUri) {
                     crossfade(true)
                     crossfade(300)

@@ -23,15 +23,17 @@ class EditProfileViewModel : ViewModel() {
         val updateMap = mutableMapOf<String, Any>()
         updateMap["name"] = userName
         updateMap["uid"] = uid
-        updateMap["imageUri"] = photoUrl.toString()
-
-        val updateRequest = UserProfileChangeRequest.Builder()
-            .setDisplayName(userName)
-            .setPhotoUri(photoUrl)
-            .build()
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                FirebaseObject.storageRef.child("$uid/profilePic").delete().await()
+                FirebaseObject.storageRef.child("$uid/profilePic").putFile(photoUrl).await()
+                val url= FirebaseObject.storageRef.child("$uid/profilePic").downloadUrl.await()
+                val updateRequest = UserProfileChangeRequest.Builder()
+                    .setDisplayName(userName)
+                    .setPhotoUri(url)
+                    .build()
+                updateMap["imageUri"] = url.toString()
                 FirebaseObject.firebaseAuth.currentUser?.updateProfile(updateRequest)?.await()
                 updateUserInFirestore(uid, updateMap)
             } catch (e: Exception) {

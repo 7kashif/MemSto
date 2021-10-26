@@ -61,8 +61,19 @@ class ChatFragment : Fragment() {
     }
 
     private fun addClickListeners() {
+        messagesAdapter.onMessageClickListener {
+            Toast.makeText(activity,it.message,Toast.LENGTH_SHORT).show()
+        }
+
         binding.ibBack.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.ibDelete.setOnClickListener {
+            if(messagesAdapter.selectedItemList.size == 0)
+                Toast.makeText(activity,"No item selected",Toast.LENGTH_SHORT).show()
+            else
+                viewModel.deleteMessages(messagesAdapter.selectedItemList)
         }
 
         binding.ibSend.setOnClickListener {
@@ -81,6 +92,7 @@ class ChatFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+        messagesAdapter.currentList.clear()
         viewModel.clearChatList()
     }
 

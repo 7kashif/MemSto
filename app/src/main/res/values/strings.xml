@@ -24,4 +24,6 @@
     <string name="sign_out">Sign out</string>
     <string name="save_changes">Save changes</string>
     <string name="set_time">%1$s,%2$s</string>
+    <string name="date">Date</string>
+    <string name="set_date">%1$s</string>
 </resources>

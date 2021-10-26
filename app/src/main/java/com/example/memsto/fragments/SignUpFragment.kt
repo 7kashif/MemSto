@@ -33,6 +33,7 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = SignupFragmentBinding.inflate(inflater)
+        binding.viewModel = viewModel
         addVmObservers()
         addConfirmPasswordObserver()
         addClickListeners()

@@ -8,6 +8,7 @@
     android:background="@color/gable_green">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/innerLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp">
@@ -55,12 +56,12 @@
 
         <ProgressBar
             android:id="@+id/pbMemories"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:indeterminateDrawable="@drawable/custom_progress"
             android:indeterminateTint="@color/calico"
-            android:visibility="gone"
+            android:indeterminateOnly="true"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivProfile" />

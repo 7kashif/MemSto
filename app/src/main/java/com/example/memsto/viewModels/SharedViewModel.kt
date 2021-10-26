@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.memsto.dataClasses.MemoryItem
-import com.example.memsto.dataClasses.UserItem
 import com.example.memsto.firebase.FirebaseObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,12 +41,13 @@ class SharedViewModel : ViewModel() {
 
     fun uploadMemory(
         memory: String,
-        imageUri: Uri
+        imageUri: Uri,
+        date: String
     ) {
         _showUploadingProgress.value = Loading.InProgress
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                FirebaseObject.storageRef.child("${userId}/$memory")
+                FirebaseObject.storageRef.child("${userId}/$memory _ $date")
                     .putFile(imageUri)
                     .addOnProgressListener { snapShot ->
                         val progress =

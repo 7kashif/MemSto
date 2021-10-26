@@ -25,4 +25,5 @@ object Utils {
         val formatter = SimpleDateFormat.getDateInstance()
         return formatter.format(Date())
     }
+
 }

@@ -27,6 +27,9 @@ class SignUpViewModel : ViewModel() {
     private val _showDoneIcon = MutableLiveData<Boolean>()
     val showDoneIcon: LiveData<Boolean> get() = _showDoneIcon
 
+    private val _signUpProgress = MutableLiveData<SignUpProgress>()
+    val signUpProgress : LiveData<SignUpProgress> get() = _signUpProgress
+
     fun signUp(
         name: String,
         imageUri: Uri,
@@ -60,14 +63,16 @@ class SignUpViewModel : ViewModel() {
                     .await()
                 _progressText.postValue("Updating profile...")
 
-                val url = FirebaseObject.storageRef.child("$uid/profilePic").downloadUrl.await() //getting profile pic url from storage
+                val url =
+                    FirebaseObject.storageRef.child("$uid/profilePic").downloadUrl.await() //getting profile pic url from storage
                 val profileUpdate = UserProfileChangeRequest.Builder()
                     .setDisplayName(name)
                     .setPhotoUri(url)
                     .build()
 
-                FirebaseObject.firebaseAuth.currentUser?.updateProfile(profileUpdate)?.await() //updating profile
-                createUserInFirestore(name,uid!!,url.toString())
+                FirebaseObject.firebaseAuth.currentUser?.updateProfile(profileUpdate)
+                    ?.await() //updating profile
+                createUserInFirestore(name, uid!!, url.toString())
 
                 _progressText.postValue("Done...!")
                 _showDoneIcon.postValue(true)
@@ -82,18 +87,26 @@ class SignUpViewModel : ViewModel() {
     }
 
     private fun createUserInFirestore(
-        userName:String,
-        userId:String,
-        userImage:String
+        userName: String,
+        userId: String,
+        userImage: String
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            val user =  UserItem(
+            val user = UserItem(
                 userName,
                 userId,
                 userImage
             )
             FirebaseObject.usersReference.add(user).await()  //adding user into firestore
         }
+    }
+
+    sealed class SignUpProgress {
+        object Loading : SignUpProgress()
+        object Done : SignUpProgress()
+        data class ProgressText(val text: String) : SignUpProgress()
+        data class Progress(val progress: Int) : SignUpProgress()
+        data class Error(val e: String) : SignUpProgress()
     }
 
 }

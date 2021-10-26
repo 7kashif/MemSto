@@ -15,15 +15,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class ChatsViewModel : ViewModel() {
-    lateinit var chatUser:UserItem
-    private var chatCollection : String = ""
+    lateinit var chatUser: UserItem
+    private var chatCollection: String = ""
     private var currentUser = FirebaseObject.firebaseAuth.currentUser!!
     private val _usersList = MutableLiveData<ArrayList<UserItem>>()
     val usersList: LiveData<ArrayList<UserItem>> get() = _usersList
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> get() = _errorMessage
     private val _chatList = MutableLiveData<ArrayList<MessageItem>>()
-    val chatList:LiveData<ArrayList<MessageItem>> get() = _chatList
+    val chatList: LiveData<ArrayList<MessageItem>> get() = _chatList
 
     init {
         realtimeUserUpdates()
@@ -54,36 +54,36 @@ class ChatsViewModel : ViewModel() {
             try {
                 val userIdsOne = chatUser.uid + currentUser.uid
                 val userIdSecond = currentUser.uid + chatUser.uid
-                val list = mutableListOf(userIdsOne,userIdSecond)
+                val list = mutableListOf(userIdsOne, userIdSecond)
                 val persons = ChatPersons(list)
-                val query = FirebaseObject.chatsReference.whereArrayContainsAny("users",list).get().await()
+                val query =
+                    FirebaseObject.chatsReference.whereArrayContainsAny("users", list).get().await()
 
-                if(query.documents.isEmpty()) {
+                if (query.documents.isEmpty()) {
                     val doc = FirebaseObject.chatsReference.add(persons).await()
                     chatCollection = doc.id
-                }
-                else {
+                } else {
                     for (item in query.documents)
                         chatCollection = item.id
                 }
                 getMessages()
-            } catch (e:Exception) {
+            } catch (e: Exception) {
                 _errorMessage.postValue(e.message)
             }
         }
     }
 
-    fun sendMessage(message:MessageItem) {
+    fun sendMessage(message: MessageItem) {
         CoroutineScope(Dispatchers.IO).launch {
-           try {
-               FirebaseObject.chatsReference
-                   .document(chatCollection)
-                   .collection("chat")
-                   .add(message)
-                   .await()
-           } catch (e:Exception) {
-               _errorMessage.postValue(e.message)
-           }
+            try {
+                FirebaseObject.chatsReference
+                    .document(chatCollection)
+                    .collection("chat")
+                    .add(message)
+                    .await()
+            } catch (e: Exception) {
+                _errorMessage.postValue(e.message)
+            }
         }
     }
 
@@ -93,15 +93,15 @@ class ChatsViewModel : ViewModel() {
                 FirebaseObject.chatsReference
                     .document(chatCollection)
                     .collection("chat")
-                    .orderBy("dateTime",Query.Direction.ASCENDING)
+                    .orderBy("dateTime", Query.Direction.ASCENDING)
                     .addSnapshotListener { value, error ->
                         error?.let {
                             _errorMessage.postValue(error.message)
                             return@addSnapshotListener
                         }
-                        value?.let { chat->
+                        value?.let { chat ->
                             val list = ArrayList<MessageItem>()
-                            for(text in chat) {
+                            for (text in chat) {
                                 val message = text.toObject<MessageItem>()
                                 message.messageId = text.id
                                 list.add(message)
@@ -109,9 +109,26 @@ class ChatsViewModel : ViewModel() {
                             _chatList.postValue(list)
                         }
                     }
-            } catch (e:Exception) {
+            } catch (e: Exception) {
                 _errorMessage.postValue(e.message)
             }
+        }
+    }
+
+    fun deleteMessages(messages: MutableList<MessageItem>) {
+        CoroutineScope(Dispatchers.IO).launch {
+          try {
+              messages.forEach {
+                  FirebaseObject.chatsReference
+                      .document(chatCollection)
+                      .collection("chat")
+                      .document(it.messageId)
+                      .delete()
+                      .await()
+              }
+          } catch (e:Exception) {
+              _errorMessage.postValue(e.message)
+          }
         }
     }
 

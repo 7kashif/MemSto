@@ -1,5 +1,6 @@
 package com.example.memsto.fragments
 
+import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,8 +15,10 @@ import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.example.memsto.R
+import com.example.memsto.Utils
 import com.example.memsto.databinding.AddImageFragmentBinding
 import com.example.memsto.viewModels.SharedViewModel
+import java.util.*
 
 class AddImageFragment : Fragment() {
     private lateinit var binding : AddImageFragmentBinding
@@ -29,6 +32,8 @@ class AddImageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = AddImageFragmentBinding.inflate(inflater)
+        binding.etDate.showSoftInputOnFocus = false
+        binding.etDate.setText(getString(R.string.set_date, Utils.getDate()))
         addClickListeners()
         addObservers()
 
@@ -43,7 +48,7 @@ class AddImageFragment : Fragment() {
                 null
 
             if(imageUri!=null && memory!=null)
-                viewModel.uploadMemory(memory!!,imageUri!!)
+                viewModel.uploadMemory(memory!!,imageUri!!,binding.etDate.text.toString())
             else if(imageUri==null)
                 Toast.makeText(activity,"Please select an image.", Toast.LENGTH_LONG).show()
             else
@@ -64,6 +69,10 @@ class AddImageFragment : Fragment() {
 
             btnAddNewImage.setOnClickListener {
                 imageContract.launch("image/*")
+            }
+
+            dateInput.setOnClickListener {
+                showDatePickerDialog()
             }
         }
     }
@@ -110,5 +119,20 @@ class AddImageFragment : Fragment() {
                 }
             }
         }
+
+
+    private fun showDatePickerDialog() {
+        val datePicker = DatePickerDialog(requireActivity(),
+            { _, year, month, dayOfMonth ->
+               val date = "$dayOfMonth/${month.plus(1)}/$year"
+                binding.etDate.setText(getString(R.string.set_date,date))
+            },
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+            )
+
+        datePicker.show()
+    }
 
 }
