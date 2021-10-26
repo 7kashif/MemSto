@@ -8,7 +8,7 @@
     <string name="sign_up">Sign up</string>
     <string name="sign_up_with_google">Sign up with Google</string>
     <string name="name">Name</string>
-    <string name="webclient_id">614668962152-a9frqofnu64eke4gac3cmruf61efni8m.apps.googleusercontent.com</string>
+    <string name="webclient_id">//TODO your webclient id from googleServices.json</string>
     <string name="hello_string">Hello, %1$s!</string>
     <string name="upload_image">Upload Image</string>
     <string name="uploading">Uploading</string>
