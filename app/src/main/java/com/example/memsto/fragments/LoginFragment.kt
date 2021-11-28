@@ -61,17 +61,20 @@ class LoginFragment : Fragment() {
     }
 
     private fun login(email:String,password:String) {
-        binding.progressBar.isVisible = true
+        binding.loadingLayout.visibility = View.VISIBLE
+        binding.btnLogin.visibility = View.INVISIBLE
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 FirebaseObject.firebaseAuth.signInWithEmailAndPassword(email,password).await()
                 withContext(Dispatchers.Main) {
-                    binding.progressBar.isVisible = false
+                    binding.loadingLayout.visibility = View.INVISIBLE
+                    binding.btnLogin.visibility = View.VISIBLE
                     this@LoginFragment.findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    binding.progressBar.isVisible = false
+                    binding.loadingLayout.visibility = View.INVISIBLE
+                    binding.btnLogin.visibility = View.VISIBLE
                     Toast.makeText(activity,e.message,Toast.LENGTH_LONG).show()
                 }
             }

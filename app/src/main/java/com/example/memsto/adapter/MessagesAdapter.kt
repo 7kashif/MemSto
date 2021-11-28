@@ -8,13 +8,16 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.memsto.R
 import com.example.memsto.dataClasses.MessageItem
 import com.example.memsto.databinding.MessageItemBinding
 import com.example.memsto.firebase.FirebaseObject
+import kotlinx.coroutines.*
 
 class MessagesAdapter : ListAdapter<MessageItem, MessagesAdapter.MessageViewHolder>(diffCallBack) {
     private var multipleItemSelected: Boolean = false
+    private val holderList = arrayListOf<MessageViewHolder>()
     val selectedItemList: MutableList<MessageItem> = mutableListOf()
 
     inner class MessageViewHolder(val binding: MessageItemBinding) :
@@ -44,28 +47,34 @@ class MessagesAdapter : ListAdapter<MessageItem, MessagesAdapter.MessageViewHold
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: MessagesAdapter.MessageViewHolder, position: Int) {
+        holderList.add(holder)
         val item = getItem(position)
 
         holder.binding.apply {
             holder.itemView.apply {
                 messageLayout.setBackgroundColor(resources.getColor(R.color.transparent, null))
-                val hrsMins = item.dateTime.substring(
-                    item.dateTime.lastIndexOf('_') + 1,
-                    item.dateTime.lastIndexOf('_') + 6
-                )
-                val meridian = item.dateTime.substring(
-                    item.dateTime.lastIndexOf(' ') + 1,
-                    item.dateTime.length
-                )
-                val time = "$hrsMins $meridian"
                 if (item.senderId == FirebaseObject.firebaseAuth.currentUser!!.uid) {
-                    sentMessageLayout.isVisible = true
-                    tvSentMessage.text = item.message
-                    tvTimeSent.text = time
+                    clSentMessage.isVisible = true
+                    ivSentMessageTail.isVisible = true
+                    tvTimeSent.text = item.dateTime
+                    if(android.webkit.URLUtil.isValidUrl(item.message)) {
+                        ivSentMemory.isVisible= true
+                        Glide.with(this).load(item.message).into(ivSentMemory)
+                    } else {
+                        tvSentMessage.isVisible = true
+                        tvSentMessage.text = item.message
+                    }
                 } else {
-                    receivedMessageLayout.isVisible = true
-                    tvReceivedMessage.text = item.message
-                    tvTimeReceived.text = time
+                    clReceivedMessage.isVisible = true
+                    ivReceivedMessageTail.isVisible = true
+                    tvTimeReceived.text = item.dateTime
+                    if(android.webkit.URLUtil.isValidUrl(item.message)) {
+                        ivReceivedMemory.isVisible= true
+                        Glide.with(this).load(item.message).into(ivReceivedMemory)
+                    } else {
+                        tvReceivedMessage.isVisible = true
+                        tvReceivedMessage.text = item.message
+                    }
                 }
 
                 root.setOnLongClickListener {
@@ -75,14 +84,25 @@ class MessagesAdapter : ListAdapter<MessageItem, MessagesAdapter.MessageViewHold
                         selectedItemList.add(item)
                     true
                 }
+
                 root.setOnClickListener {
                     if (multipleItemSelected) {
-                        if(selectedItemList.contains(item)) {
-                            messageLayout.setBackgroundColor(resources.getColor(R.color.transparent, null))
+                        if (selectedItemList.contains(item)) {
+                            messageLayout.setBackgroundColor(
+                                resources.getColor(
+                                    R.color.transparent,
+                                    null
+                                )
+                            )
                             selectedItemList.remove(item)
                         } else {
                             selectedItemList.add(item)
-                            messageLayout.setBackgroundColor(resources.getColor(R.color.calico_95, null))
+                            messageLayout.setBackgroundColor(
+                                resources.getColor(
+                                    R.color.calico_95,
+                                    null
+                                )
+                            )
                         }
                     }
                     if (selectedItemList.size == 0)
@@ -92,13 +112,24 @@ class MessagesAdapter : ListAdapter<MessageItem, MessagesAdapter.MessageViewHold
         }
     }
 
+//    fun showMessageTimeTv() {
+//        CoroutineScope(Dispatchers.Main).launch {
+//            holderList.forEach {
+//                it.binding.tvTimeReceived.isVisible = true
+//                it.binding.tvTimeSent.isVisible = true
+//            }
+//            delay(1500)
+//            holderList.forEach {
+//                it.binding.tvTimeReceived.isVisible = false
+//                it.binding.tvTimeSent.isVisible = false
+//            }
+//            cancel("job is done")
+//        }
+//    }
+
     private var messageClickListener: ((MessageItem) -> Unit)? = null
-//    private var messageLongClickListener: ((Boolean) -> Unit)? = null
     fun onMessageClickListener(listener: (MessageItem) -> Unit) {
         messageClickListener = listener
     }
-//    fun onMessageLongClickListener(listener:(Boolean)->Unit) {
-//        messageLongClickListener = listener
-//    }
 
 }

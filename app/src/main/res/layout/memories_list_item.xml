@@ -12,6 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/calico"/>
+
         <ImageView
             android:id="@+id/ivMemoryImage"
             android:layout_width="match_parent"
@@ -22,7 +29,7 @@
             android:id="@+id/tvMemory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/gable_green"
+            android:textColor="@color/white"
             android:background="@drawable/memory_text_bg"
             android:textSize="18sp"
             android:gravity="center_horizontal"

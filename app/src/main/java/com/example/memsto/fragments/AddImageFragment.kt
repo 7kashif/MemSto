@@ -21,10 +21,10 @@ import com.example.memsto.viewModels.SharedViewModel
 import java.util.*
 
 class AddImageFragment : Fragment() {
-    private lateinit var binding : AddImageFragmentBinding
-    private val viewModel : SharedViewModel by activityViewModels()
-    private var memory:String?=null
-    private var imageUri: Uri?=null
+    private lateinit var binding: AddImageFragmentBinding
+    private val viewModel: SharedViewModel by activityViewModels()
+    private var memory: String? = null
+    private var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +34,7 @@ class AddImageFragment : Fragment() {
         binding = AddImageFragmentBinding.inflate(inflater)
         binding.etDate.showSoftInputOnFocus = false
         binding.etDate.setText(getString(R.string.set_date, Utils.getDate()))
+        binding.etDate.showSoftInputOnFocus = false
         addClickListeners()
         addObservers()
 
@@ -42,17 +43,17 @@ class AddImageFragment : Fragment() {
 
     private fun checkData() {
         binding.apply {
-            memory = if(etMemory.text?.isNotEmpty()==true)
+            memory = if (etMemory.text?.isNotEmpty() == true)
                 etMemory.text.toString().trim()
             else
                 null
 
-            if(imageUri!=null && memory!=null)
-                viewModel.uploadMemory(memory!!,imageUri!!,binding.etDate.text.toString())
-            else if(imageUri==null)
-                Toast.makeText(activity,"Please select an image.", Toast.LENGTH_LONG).show()
+            if (imageUri != null && memory != null)
+                viewModel.uploadMemory(memory!!, imageUri!!, binding.etDate.text.toString())
+            else if (imageUri == null)
+                Toast.makeText(activity, "Please select an image.", Toast.LENGTH_LONG).show()
             else
-                Toast.makeText(activity,"Please enter a memory.", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Please enter a memory.", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -63,7 +64,6 @@ class AddImageFragment : Fragment() {
             }
 
             binding.btnBack.setOnClickListener {
-                viewModel.getAllMemories()
                 findNavController().popBackStack()
             }
 
@@ -71,20 +71,20 @@ class AddImageFragment : Fragment() {
                 imageContract.launch("image/*")
             }
 
-            dateInput.setOnClickListener {
+            ibEditDate.setOnClickListener {
                 showDatePickerDialog()
             }
         }
     }
 
     private fun addObservers() {
-        viewModel.uploadingProgress.observe(viewLifecycleOwner,{
+        viewModel.uploadingProgress.observe(viewLifecycleOwner, {
             binding.pbImageUploading.progress = it
         })
 
         viewModel.showUploadingProgress.observe(viewLifecycleOwner, {
             binding.apply {
-                when(it) {
+                when (it) {
                     is SharedViewModel.Loading.InProgress -> {
                         pbCustom.isVisible = true
                         tvUploading.text = getString(R.string.uploading)
@@ -96,7 +96,7 @@ class AddImageFragment : Fragment() {
                         pbCustom.isVisible = false
                         tvUploading.text = getString(R.string.error_occurred)
                         btnUploadImage.isClickable = false
-                        Toast.makeText(activity,it.error,Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, it.error, Toast.LENGTH_LONG).show()
                     }
                     else -> {
                         pbCustom.visibility = View.INVISIBLE
@@ -122,15 +122,30 @@ class AddImageFragment : Fragment() {
 
 
     private fun showDatePickerDialog() {
-        val datePicker = DatePickerDialog(requireActivity(),
+        val datePicker = DatePickerDialog(
+            requireActivity(),
             { _, year, month, dayOfMonth ->
-               val date = "$dayOfMonth/${month.plus(1)}/$year"
-                binding.etDate.setText(getString(R.string.set_date,date))
+                val mon = when(month + 1) {
+                    1 -> "Jan"
+                    2 -> "Fab"
+                    3 -> "Mar"
+                    4 -> "Apr"
+                    5 -> "May"
+                    6 -> "Jun"
+                    7 -> "Jul"
+                    8 -> "Aug"
+                    9 -> "Sep"
+                    10 -> "Oct"
+                    11-> "Nov"
+                    else -> "Dec"
+                }
+                val date = "$mon $dayOfMonth, $year"
+                binding.etDate.setText(getString(R.string.set_date, date))
             },
             Calendar.getInstance().get(Calendar.YEAR),
             Calendar.getInstance().get(Calendar.MONTH),
             Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-            )
+        )
 
         datePicker.show()
     }

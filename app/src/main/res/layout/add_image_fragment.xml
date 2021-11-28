@@ -63,32 +63,28 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/dateInput"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/date"
-        app:boxCornerRadiusBottomEnd="8dp"
-        app:boxCornerRadiusBottomStart="8dp"
-        app:boxCornerRadiusTopEnd="8dp"
-        app:boxCornerRadiusTopStart="8dp"
-        app:boxStrokeColor="@color/calico"
-        app:hintTextColor="@color/calico"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/calico"
+        app:layout_constraintTop_toBottomOf="@id/memoryInput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/memoryInput">
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Nov 27, 2021"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/calico"
-            android:textCursorDrawable="@drawable/cursor"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
+    <ImageButton
+        android:id="@+id/ibEditDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintEnd_toEndOf="@id/etDate"
+        app:layout_constraintBottom_toBottomOf="@id/etDate"
+        app:layout_constraintTop_toTopOf="@id/etDate"
+        app:tint="@color/calico"/>
 
     <Button
         android:id="@+id/btnUploadImage"
@@ -102,7 +98,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateInput" />
+        app:layout_constraintTop_toBottomOf="@id/etDate" />
 
     <ProgressBar
         android:id="@+id/pbCustom"

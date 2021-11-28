@@ -1,12 +1,13 @@
 package com.example.memsto.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.transform.CircleCropTransformation
+import com.bumptech.glide.Glide
+import com.example.memsto.R
 import com.example.memsto.dataClasses.UserItem
 import com.example.memsto.databinding.UsersListItemBinding
 
@@ -37,17 +38,19 @@ class UsersAdapter : ListAdapter<UserItem, UsersAdapter.UserViewHolder>(diffCall
         )
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val item = getItem(position)
 
         holder.binding.apply {
             holder.itemView.apply {
                 tvName.text = item.name
-                ivDp.load(item.imageUri) {
-                    crossfade(true)
-                    crossfade(500)
-                    transformations(CircleCropTransformation())
-                }
+                Glide.with(this)
+                    .load(item.imageUri)
+                    .placeholder(resources.getDrawable(R.drawable.ic_person,null))
+                    .circleCrop()
+                    .into(ivDp)
+
                 root.setOnClickListener {
                     itemClickListener?.let {
                         it(item)

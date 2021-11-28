@@ -27,9 +27,6 @@ class SignUpViewModel : ViewModel() {
     private val _showDoneIcon = MutableLiveData<Boolean>()
     val showDoneIcon: LiveData<Boolean> get() = _showDoneIcon
 
-    private val _signUpProgress = MutableLiveData<SignUpProgress>()
-    val signUpProgress : LiveData<SignUpProgress> get() = _signUpProgress
-
     fun signUp(
         name: String,
         imageUri: Uri,

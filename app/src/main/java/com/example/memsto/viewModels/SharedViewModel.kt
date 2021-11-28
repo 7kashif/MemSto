@@ -4,8 +4,12 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.memsto.Utils
 import com.example.memsto.dataClasses.MemoryItem
 import com.example.memsto.firebase.FirebaseObject
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,6 +17,7 @@ import kotlinx.coroutines.tasks.await
 
 class SharedViewModel : ViewModel() {
     private var userId: String = ""
+    private var userFbDocId: String = ""
     private val _profilePicUri = MutableLiveData<Uri>()
     val profilePicUri: LiveData<Uri> get() = _profilePicUri
     private val _displayName = MutableLiveData<String>()
@@ -23,12 +28,11 @@ class SharedViewModel : ViewModel() {
     val uploadingProgress: LiveData<Int> get() = _uploadingProgress
     private val _memoriesList = MutableLiveData<ArrayList<MemoryItem>>()
     val memoriesList: LiveData<ArrayList<MemoryItem>> get() = _memoriesList
-    private val _memoriesDownloadingProgress = MutableLiveData<Loading>()
-    val memoriesDownloadingProgress:LiveData<Loading>get() = _memoriesDownloadingProgress
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> get() = _errorMessage
 
     init {
         getUserData()
-        getAllMemories()
     }
 
     fun getUserData() {
@@ -37,23 +41,66 @@ class SharedViewModel : ViewModel() {
             _profilePicUri.value = it.photoUrl
             userId = it.uid
         }
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val query = FirebaseObject.usersReference
+                    .whereEqualTo("uid",userId)
+                    .get()
+                    .await()
+                if(query.isEmpty)
+                    _errorMessage.postValue("No user Found.")
+                else {
+                    query.documents.forEach {
+                        userFbDocId = it.id
+                    }
+                }
+                getAllMemories()
+            } catch (e: Exception) {
+                _errorMessage.postValue(e.message.toString())
+            }
+        }
     }
 
     fun uploadMemory(
-        memory: String,
+        memoryDetail: String,
         imageUri: Uri,
-        date: String
+        memoryDate: String
     ) {
         _showUploadingProgress.value = Loading.InProgress
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                FirebaseObject.storageRef.child("${userId}/$memory _ $date")
+                val currentTime = System.currentTimeMillis()
+                FirebaseObject.storageRef.child("${userId}/$currentTime")
                     .putFile(imageUri)
                     .addOnProgressListener { snapShot ->
                         val progress =
                             ((100 * snapShot.bytesTransferred) / (snapShot.totalByteCount)) * 1024
                         _uploadingProgress.postValue(progress.toInt())
                     }
+                    .await()
+
+                val url = FirebaseObject.storageRef.child("${userId}/$currentTime")
+                    .downloadUrl
+                    .await()
+                val memoryItem = MemoryItem(
+                    memory = memoryDetail,
+                    date = memoryDate,
+                    imageUri = url.toString(),
+                )
+                saveMemoryInFirestore(memoryItem)
+            } catch (e: Exception) {
+                _showUploadingProgress.postValue(Loading.ErrorOccurred(e.message.toString()))
+            }
+        }
+    }
+
+    private fun saveMemoryInFirestore(memory: MemoryItem) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                FirebaseObject.usersReference
+                    .document(userFbDocId)
+                    .collection(Utils.MEMORY_ITEMS)
+                    .add(memory)
                     .await()
                 _showUploadingProgress.postValue(Loading.Uploaded)
             } catch (e: Exception) {
@@ -62,21 +109,29 @@ class SharedViewModel : ViewModel() {
         }
     }
 
-    fun getAllMemories() {
-        _memoriesDownloadingProgress.value = Loading.InProgress
+    private fun getAllMemories() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val imagesList = ArrayList<MemoryItem>()
-                val images = FirebaseObject.storageRef.child("$userId/").listAll().await()
-                for(image in images.items) {
-                    val url = image.downloadUrl.await()
-                    if(image.name != "profilePic")
-                        imagesList.add(MemoryItem(image.name,url))
-                }
-                _memoriesList.postValue(imagesList)
-                _memoriesDownloadingProgress.postValue(Loading.Downloaded)
-            }catch (e:Exception) {
-                _memoriesDownloadingProgress.postValue(Loading.ErrorOccurred(e.message.toString()))
+               FirebaseObject.usersReference
+                   .document(userFbDocId)
+                   .collection(Utils.MEMORY_ITEMS)
+                   .addSnapshotListener { value, error ->
+                   error?.let {
+                       _errorMessage.postValue(it.message.toString())
+                       return@addSnapshotListener
+                   }
+                   value?.let {items->
+                       val list = ArrayList<MemoryItem>()
+                       for(item in items) {
+                           val mem = item.toObject<MemoryItem>()
+                           mem.fbDocId = item.id
+                           list.add(mem)
+                       }
+                       _memoriesList.postValue(list)
+                   }
+               }
+            } catch (e: Exception) {
+                _errorMessage.postValue(e.message.toString())
             }
         }
     }
@@ -84,7 +139,6 @@ class SharedViewModel : ViewModel() {
     sealed class Loading {
         object InProgress : Loading()
         object Uploaded : Loading()
-        object Downloaded : Loading()
         data class ErrorOccurred(val error: String) : Loading()
     }
 

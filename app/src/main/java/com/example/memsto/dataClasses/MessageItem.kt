@@ -7,5 +7,6 @@ data class MessageItem(
     var messageId:String="",
     var message : String="",
     var senderId : String="",
-    var dateTime : String=""
+    var dateTime : String="",
+    var timeStamp: Timestamp? = null
 )

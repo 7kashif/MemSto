@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gable_green"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageButton
+        android:id="@+id/ibBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivMemory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/guideline50"
+        app:layout_constraintTop_toBottomOf="@id/ibBack"
+        tools:src="@drawable/spiderman" />
+
+    <TextView
+        android:id="@+id/tvMemory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="20sp"
+        android:textColor="@color/calico"
+        app:layout_constraintTop_toBottomOf="@id/ivMemory"
+        tools:text="@string/test_message"/>
+
+    <TextView
+        android:id="@+id/tvMemoryDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="20sp"
+        android:textColor="@color/calico"
+        app:layout_constraintTop_toBottomOf="@id/tvMemory"
+        tools:text="Nov 29, 2021"/>
+
+    <ImageButton
+        android:id="@+id/ibShareMemory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_share"
+        app:layout_constraintEnd_toStartOf="@id/ibSendMemory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibSendMemory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_send"
+        android:rotation="-45"
+        app:layout_constraintEnd_toStartOf="@id/ibDownloadMemory"
+        app:layout_constraintStart_toEndOf="@id/ibShareMemory"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tint="@color/calico" />
+
+    <ImageButton
+        android:id="@+id/ibDownloadMemory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_download"
+        app:layout_constraintEnd_toStartOf="@id/ibDeleteMemory"
+        app:layout_constraintStart_toEndOf="@id/ibSendMemory"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageButton
+        android:id="@+id/ibDeleteMemory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ibDownloadMemory"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

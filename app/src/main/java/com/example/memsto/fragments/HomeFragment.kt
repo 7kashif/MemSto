@@ -1,10 +1,8 @@
 package com.example.memsto.fragments
 
+import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -12,13 +10,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.memsto.R
 import com.example.memsto.Utils
 import com.example.memsto.adapter.MemoriesAdapter
+import com.example.memsto.adapter.UsersAdapter
+import com.example.memsto.dataClasses.MemoryItem
+import com.example.memsto.dataClasses.Progress
 import com.example.memsto.databinding.HomeFragmentBinding
+import com.example.memsto.databinding.LogoutDialogBinding
+import com.example.memsto.databinding.ShareMemoryLayoutBinding
+import com.example.memsto.viewModels.ChatsViewModel
 import com.example.memsto.viewModels.SharedViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.home_fragment.view.*
@@ -26,7 +32,9 @@ import kotlinx.android.synthetic.main.home_fragment.view.*
 class HomeFragment : Fragment() {
     private lateinit var binding: HomeFragmentBinding
     private val viewModel: SharedViewModel by activityViewModels()
+    private val chatsViewModel: ChatsViewModel by activityViewModels()
     private val memoriesAdapter = MemoriesAdapter()
+    private val usersAdapter = UsersAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,30 +63,14 @@ class HomeFragment : Fragment() {
             binding.drawerUserName.text = string
         })
         viewModel.profilePicUri.observe(viewLifecycleOwner, { uri ->
-            binding.ivProfile.load(uri) {
-                crossfade(true)
-                crossfade(300)
-                transformations(CircleCropTransformation())
-            }
+            binding.ivProfile
+                .load(uri) {
+                    crossfade(true)
+                    crossfade(300)
+                    transformations(CircleCropTransformation())
+                }
             binding.drawerProfilePic.load(uri) {
                 transformations(CircleCropTransformation())
-            }
-        })
-
-        viewModel.memoriesDownloadingProgress.observe(viewLifecycleOwner, {
-            binding.apply {
-                when (it) {
-                    is SharedViewModel.Loading.InProgress -> {
-                        pbMemories.isVisible = true
-                    }
-                    is SharedViewModel.Loading.ErrorOccurred -> {
-                        pbMemories.isVisible = false
-                        Toast.makeText(activity, it.error, Toast.LENGTH_LONG).show()
-                    }
-                    else -> {
-                        pbMemories.isVisible = false
-                    }
-                }
             }
         })
 
@@ -91,6 +83,13 @@ class HomeFragment : Fragment() {
                 binding.tvNoMemory.visibility = View.GONE
         })
 
+        viewModel.errorMessage.observe(viewLifecycleOwner, {
+            Toast.makeText(activity, it, Toast.LENGTH_LONG).show()
+        })
+
+        chatsViewModel.usersList.observe(viewLifecycleOwner, {
+            usersAdapter.submitList(it)
+        })
     }
 
     private fun addClickListeners() {
@@ -111,10 +110,7 @@ class HomeFragment : Fragment() {
             }
 
             tvSignOut.setOnClickListener {
-                activity?.viewModelStore?.clear()
-                Firebase.auth.signOut()
-                Toast.makeText(activity, "Logged out successfully.", Toast.LENGTH_LONG).show()
-                findNavController().popBackStack()
+                showLogoutDialog()
             }
 
             btnEditProfile.setOnClickListener {
@@ -122,7 +118,84 @@ class HomeFragment : Fragment() {
                 this@HomeFragment.findNavController()
                     .navigate(HomeFragmentDirections.actionHomeFragmentToEditProfileFragment())
             }
+            memoriesAdapter.onMemoryItemClickListener {
+                val bundle = Bundle().apply {
+                    putParcelable("memory",it)
+                }
+                findNavController().navigate(R.id.action_homeFragment_to_memoryDetailFragment,bundle)
+            }
+            memoriesAdapter.onMemoryItemLongClickListener {
+                showShareBottomSheet(it)
+            }
         }
+    }
+
+    private fun showShareBottomSheet(memory: MemoryItem) {
+        val sheetBinding = ShareMemoryLayoutBinding.inflate(layoutInflater)
+        val bottomSheet = BottomSheetDialog(requireContext(), R.style.bottomSheetTheme)
+        bottomSheet.apply {
+            setContentView(sheetBinding.root)
+            setCancelable(true)
+            setCanceledOnTouchOutside(true)
+        }
+
+        usersAdapter.onItemClickListener {
+            chatsViewModel.shareMemory(it.uid, memory)
+        }
+
+        sheetBinding.apply {
+            rvUsers.adapter = usersAdapter
+            rvUsers.layoutManager = LinearLayoutManager(requireContext())
+            rvUsers.setHasFixedSize(true)
+        }
+
+        chatsViewModel.memoryShareProgress.observe(viewLifecycleOwner, {
+            when (it) {
+                is Progress.Loading -> {
+                    sheetBinding.progressBar.isVisible = true
+                }
+                is Progress.Error -> {
+                    Toast.makeText(activity, it.e, Toast.LENGTH_LONG).show()
+                }
+                else -> {
+                    sheetBinding.progressBar.isVisible = false
+                    Toast.makeText(activity,"Memory Shared Successfully.",Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+
+        bottomSheet.show()
+    }
+
+    private fun showLogoutDialog() {
+        val dialogBinding = LogoutDialogBinding.inflate(layoutInflater)
+
+        val dialog = Dialog(requireActivity())
+        dialog.apply {
+            setContentView(dialogBinding.root)
+            window?.setLayout(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT
+            )
+            window?.setBackgroundDrawableResource(R.color.transparent)
+            setCancelable(true)
+            setCanceledOnTouchOutside(true)
+        }
+
+        dialogBinding.btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnLogout.setOnClickListener {
+            activity?.viewModelStore?.clear()
+            Firebase.auth.signOut()
+            dialog.dismiss()
+            Toast.makeText(activity, "Logged out successfully.", Toast.LENGTH_LONG).show()
+            findNavController().popBackStack()
+        }
+
+        dialog.show()
+
     }
 
 

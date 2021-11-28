@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_homeFragment_to_usersFragment"
             app:destination="@id/usersFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_memoryDetailFragment"
+            app:destination="@id/memoryDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addImageFragment"
@@ -91,6 +94,18 @@
         <action
             android:id="@+id/action_chatFragment_to_usersFragment"
             app:destination="@id/usersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/memoryDetailFragment"
+        android:name="com.example.memsto.fragments.MemoryDetailFragment"
+        android:label="MemoryDetailFragment"
+        tools:layout="@layout/memory_detail_fragment">
+        <argument
+            android:name="memory"
+            app:argType="com.example.memsto.dataClasses.MemoryItem"/>
+        <action
+            android:id="@+id/action_memoryDetailFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 
 </navigation>

@@ -14,4 +14,5 @@
     <color name="transparent">#00000000</color>
     <color name="gable_green_95">#95172D34</color>
     <color name="darkslategray">#232932</color>
+    <color name="darkGray">#a3a5a8</color>
 </resources>

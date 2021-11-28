@@ -48,13 +48,22 @@
         app:layout_constraintBottom_toBottomOf="@id/ivProfile"
         tools:text="User Name"/>
 
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminateOnly="true"
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminateTint="@color/calico"
+        app:layout_constraintTop_toBottomOf="@id/ivProfile"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/ivProfile"
+        app:layout_constraintTop_toBottomOf="@id/progressbar"
         app:layout_constraintBottom_toTopOf="@id/etMessage"/>
 
     <EditText

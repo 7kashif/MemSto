@@ -1,8 +1,12 @@
 package com.example.memsto.dataClasses
 
-import android.net.Uri
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class MemoryItem  (
-    var memory:String,
-    var imageUri: Uri
-)
+    var fbDocId: String="",
+    var memory:String="",
+    var date: String = "",
+    var imageUri: String = "",
+):Parcelable

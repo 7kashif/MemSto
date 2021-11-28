@@ -3,10 +3,10 @@ package com.example.memsto.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.memsto.dataClasses.ChatPersons
-import com.example.memsto.dataClasses.MessageItem
-import com.example.memsto.dataClasses.UserItem
+import com.example.memsto.Utils
+import com.example.memsto.dataClasses.*
 import com.example.memsto.firebase.FirebaseObject
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +24,10 @@ class ChatsViewModel : ViewModel() {
     val errorMessage: LiveData<String> get() = _errorMessage
     private val _chatList = MutableLiveData<ArrayList<MessageItem>>()
     val chatList: LiveData<ArrayList<MessageItem>> get() = _chatList
+    private val _memoryShareProgress= MutableLiveData<Progress>()
+    val memoryShareProgress: LiveData<Progress> get() = _memoryShareProgress
+    private val _messageProgress = MutableLiveData<Progress>()
+    val messageProgress: LiveData<Progress> get() = _messageProgress
 
     init {
         realtimeUserUpdates()
@@ -75,14 +79,16 @@ class ChatsViewModel : ViewModel() {
 
     fun sendMessage(message: MessageItem) {
         CoroutineScope(Dispatchers.IO).launch {
+            _messageProgress.postValue(Progress.Loading)
             try {
                 FirebaseObject.chatsReference
                     .document(chatCollection)
                     .collection("chat")
                     .add(message)
                     .await()
+                _messageProgress.postValue(Progress.Done)
             } catch (e: Exception) {
-                _errorMessage.postValue(e.message)
+                _messageProgress.postValue(Progress.Error(e.message.toString()))
             }
         }
     }
@@ -93,7 +99,7 @@ class ChatsViewModel : ViewModel() {
                 FirebaseObject.chatsReference
                     .document(chatCollection)
                     .collection("chat")
-                    .orderBy("dateTime", Query.Direction.ASCENDING)
+                    .orderBy("timeStamp", Query.Direction.ASCENDING)
                     .addSnapshotListener { value, error ->
                         error?.let {
                             _errorMessage.postValue(error.message)
@@ -129,6 +135,42 @@ class ChatsViewModel : ViewModel() {
           } catch (e:Exception) {
               _errorMessage.postValue(e.message)
           }
+        }
+    }
+
+    fun shareMemory(uid:String, memory:MemoryItem) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _memoryShareProgress.postValue(Progress.Loading)
+            val userIdsOne = uid + currentUser.uid
+            val userIdSecond = currentUser.uid + uid
+            val list = mutableListOf(userIdsOne, userIdSecond)
+            val persons = ChatPersons(list)
+            try {
+                val query =
+                    FirebaseObject.chatsReference.whereArrayContainsAny("users", list).get().await()
+
+                if (query.documents.isEmpty()) {
+                    val doc = FirebaseObject.chatsReference.add(persons).await()
+                    chatCollection = doc.id
+                } else {
+                    for (item in query.documents)
+                        chatCollection = item.id
+                }
+                val message= MessageItem(
+                    senderId = currentUser.uid,
+                    message = memory.imageUri,
+                    dateTime = Utils.getDateAndTime(),
+                    timeStamp = Timestamp.now()
+                )
+                FirebaseObject.chatsReference
+                    .document(chatCollection)
+                    .collection("chat")
+                    .add(message)
+                    .await()
+                _memoryShareProgress.postValue(Progress.Done)
+            } catch (e: Exception) {
+                _memoryShareProgress.postValue(Progress.Error(e.message.toString()))
+            }
         }
     }
 

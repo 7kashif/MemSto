@@ -26,4 +26,11 @@
     <string name="set_time">%1$s,%2$s</string>
     <string name="date">Date</string>
     <string name="set_date">%1$s</string>
+    <string name="are_you_sure">Are you sure you want to Logout?</string>
+    <string name="no">No</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="share_memory">Share Memory</string>
+    <string name="share">Share</string>
+    <string name="loading_image">Loading image…</string>
 </resources>

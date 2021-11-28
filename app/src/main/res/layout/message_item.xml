@@ -1,93 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/messageLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/sentMessageLayout"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glSent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75"/>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clSentMessage"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:padding="8dp"
-        android:background="@color/transparent"
-        android:visibility="gone">
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/glSent"
+        app:layout_constraintEnd_toStartOf="@id/ivSentMessageTail"
+        android:background="@drawable/sent_message_bg">
 
         <TextView
             android:id="@+id/tvSentMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/sent_message_bg"
             android:textColor="@color/gable_green"
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:maxWidth="280dp"
-            app:layout_constraintEnd_toStartOf="@id/ivSentMessageTail"
+            android:textSize="18sp"
+            android:maxWidth="300dp"
+            android:visibility="gone"
+            tools:text="@string/test_message"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/test_message" />
+            app:layout_constraintBottom_toTopOf="@id/tvTimeSent"/>
 
         <ImageView
-            android:id="@+id/ivSentMessageTail"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:id="@+id/ivSentMemory"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:scaleType="fitXY"
-            android:src="@drawable/message_tail"
+            tools:src="@drawable/spiderman"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tvSentMessage"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvTimeSent"/>
+
         <TextView
             android:id="@+id/tvTimeSent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@id/tvSentMessage"
-            app:layout_constraintTop_toBottomOf="@id/tvSentMessage"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="1:29 AM"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/receivedMessageLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
+    <ImageView
+        android:id="@+id/ivSentMessageTail"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:scaleType="fitXY"
         android:visibility="gone"
-        android:background="@color/transparent">
+        android:src="@drawable/message_tail"
+        app:layout_constraintBottom_toBottomOf="@id/clSentMessage"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clReceivedMessage"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivReceivedMessageTail"
+        app:layout_constraintEnd_toStartOf="@id/glReceived"
+        android:background="@drawable/received_message_bg">
 
         <TextView
             android:id="@+id/tvReceivedMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/received_message_bg"
             android:textColor="@color/gable_green"
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:maxWidth="280dp"
-            app:layout_constraintStart_toEndOf="@id/ivReceivedMessageTail"
+            android:textSize="18sp"
+            android:maxWidth="300dp"
+            android:visibility="gone"
+            tools:text="@string/test_message"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/test_message" />
+            app:layout_constraintBottom_toTopOf="@id/tvTimeReceived"/>
 
         <ImageView
-            android:id="@+id/ivReceivedMessageTail"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:id="@+id/ivReceivedMemory"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
             android:scaleType="fitXY"
-            android:src="@drawable/message_tail"
-            android:rotation="270"
+            tools:src="@drawable/spiderman"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tvReceivedMessage"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvTimeReceived"/>
 
         <TextView
             android:id="@+id/tvTimeReceived"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@id/tvReceivedMessage"
-            app:layout_constraintTop_toBottomOf="@id/tvReceivedMessage"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="1:29 AM"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/ivReceivedMessageTail"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/message_tail"
+        android:rotation="270"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/clReceivedMessage"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
