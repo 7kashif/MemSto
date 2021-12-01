@@ -97,8 +97,8 @@
 
             <ImageView
                 android:id="@+id/drawerProfilePic"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:scaleType="fitXY"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +144,6 @@
                 android:text="@string/add_image"
                 android:textColor="@color/gable_green"
                 android:textSize="20sp"
-                android:drawablePadding="8dp"
                 android:background="?attr/selectableItemBackground"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/headerLine"

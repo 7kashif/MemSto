@@ -1,5 +1,6 @@
 package com.example.memsto.fragments
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.bumptech.glide.Glide
 import com.example.memsto.R
 import com.example.memsto.Utils
 import com.example.memsto.adapter.MemoriesAdapter
@@ -56,6 +58,7 @@ class HomeFragment : Fragment() {
         setHasFixedSize(true)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun addObservers() {
 
         viewModel.displayName.observe(viewLifecycleOwner, { string ->
@@ -63,12 +66,11 @@ class HomeFragment : Fragment() {
             binding.drawerUserName.text = string
         })
         viewModel.profilePicUri.observe(viewLifecycleOwner, { uri ->
-            binding.ivProfile
-                .load(uri) {
-                    crossfade(true)
-                    crossfade(300)
-                    transformations(CircleCropTransformation())
-                }
+            Glide.with(this)
+                .load(uri)
+                .placeholder(resources.getDrawable(R.drawable.ic_person,null))
+                .circleCrop()
+                .into(binding.ivProfile)
             binding.drawerProfilePic.load(uri) {
                 transformations(CircleCropTransformation())
             }

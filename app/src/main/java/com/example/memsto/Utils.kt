@@ -2,10 +2,8 @@ package com.example.memsto
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.util.Log
@@ -13,10 +11,7 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.FileProvider
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
@@ -32,6 +27,20 @@ import java.util.*
 
 object Utils {
     const val MEMORY_ITEMS = "memoryItems"
+    val arrayOfMonths= arrayOf(
+        "Jan",
+        "Fab",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    )
     fun addBackPressedCallback(fragment: Fragment) {
         fragment.requireActivity().onBackPressedDispatcher.addCallback(fragment.viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
@@ -52,11 +61,10 @@ object Utils {
         return formatter.format(Date())
     }
 
-    private val loaderProgress = MutableLiveData<Int>()
-
     @DelicateCoroutinesApi
-    fun shareMemory(context: Context, memory: MemoryItem , inflater: LayoutInflater, lifeCycleOwner: LifecycleOwner) {
-        showProgressDialog(context,inflater,lifeCycleOwner)
+    fun shareMemory(context: Context, memory: MemoryItem, inflater: LayoutInflater) {
+        val dialog= showProgressDialog(context, inflater)
+        dialog.show()
         var contentUri: Uri? = null
         val cachePath = File(context.cacheDir,"images")
         cachePath.mkdir()
@@ -67,35 +75,30 @@ object Utils {
                 .data(memory.imageUri)
                 .allowHardware(false)
                 .build()
-            loaderProgress.postValue(0)
             when(loader.execute(request)) {
                 is SuccessResult -> {
-                    loaderProgress.postValue(25)
                     val result = (loader.execute(request) as SuccessResult).drawable
                     val bitmap = (result as BitmapDrawable).bitmap
-                    loaderProgress.postValue(50)
                     val stream =
                         FileOutputStream("$cachePath/${timeMillis}.jpeg")
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                    loaderProgress.postValue(75)
                     val newFile = File(cachePath, "$timeMillis.jpeg")
                     contentUri= FileProvider.getUriForFile(
                         context,
                         "${BuildConfig.APPLICATION_ID}.provider",
                         newFile
                     )
-                    loaderProgress.postValue(100)
                 }
                 else -> Unit
             }
         }.invokeOnCompletion {
-            loaderProgress.postValue(0)
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "image/*"
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putExtra(Intent.EXTRA_STREAM,contentUri)
             intent.putExtra(Intent.EXTRA_TEXT,memory.memory+" on "+memory.date)
+            dialog.dismiss()
             try {
                 context.startActivity(
                     Intent.createChooser(
@@ -112,28 +115,21 @@ object Utils {
 
     fun showProgressDialog(
         context: Context,
-        inflater: LayoutInflater,
-        lifeCycleOwner: LifecycleOwner
-    ) {
+        inflater: LayoutInflater
+    ):Dialog {
         val binding = LoaderDialogBinding.inflate(inflater)
         val dialog = Dialog(context)
         dialog.apply {
             setContentView(binding.root)
             window?.setLayout(
-                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT
             )
             window?.setBackgroundDrawableResource(R.color.transparent)
             setCancelable(false)
             setCanceledOnTouchOutside(false)
         }
-        loaderProgress.observe(lifeCycleOwner,{
-            binding.progressbar.progress = it
-            binding.tvProgress.text = "$it%"
-            if(it==100)
-                dialog.dismiss()
-        })
 
-        dialog.show()
+        return dialog
     }
 }

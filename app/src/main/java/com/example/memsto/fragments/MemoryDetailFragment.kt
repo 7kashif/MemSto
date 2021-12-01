@@ -60,7 +60,7 @@ class MemoryDetailFragment : Fragment() {
                 findNavController().popBackStack()
             }
             ibShareMemory.setOnClickListener {
-                Utils.shareMemory(requireContext(),memory,layoutInflater,viewLifecycleOwner)
+                Utils.shareMemory(requireContext(), memory, layoutInflater)
             }
         }
         chatsViewModel.usersList.observe(viewLifecycleOwner,{

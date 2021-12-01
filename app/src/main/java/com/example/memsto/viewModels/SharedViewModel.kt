@@ -74,7 +74,7 @@ class SharedViewModel : ViewModel() {
                     .putFile(imageUri)
                     .addOnProgressListener { snapShot ->
                         val progress =
-                            ((100 * snapShot.bytesTransferred) / (snapShot.totalByteCount)) * 1024
+                            (snapShot.bytesTransferred / snapShot.totalByteCount) * 100
                         _uploadingProgress.postValue(progress.toInt())
                     }
                     .await()

@@ -11,11 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.Transformation
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.memsto.R
 import com.example.memsto.Utils
 import com.example.memsto.adapter.MessagesAdapter
@@ -29,7 +25,7 @@ import com.google.firebase.Timestamp
 class ChatFragment : Fragment() {
     private lateinit var binding: ChatFragmentBinding
     private val viewModel: ChatsViewModel by activityViewModels()
-    private val messagesAdapter = MessagesAdapter()
+    private lateinit var messagesAdapter : MessagesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +33,7 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = ChatFragmentBinding.inflate(inflater)
+        messagesAdapter = MessagesAdapter(requireContext())
         binding.rvMessages.scrollToPosition(messagesAdapter.currentList.size - 1)
         addClickListeners()
         setUpChatsRv()
@@ -49,6 +46,7 @@ class ChatFragment : Fragment() {
         adapter = messagesAdapter
         layoutManager = LinearLayoutManager(activity)
         (layoutManager as LinearLayoutManager).stackFromEnd = true
+        setHasFixedSize(true)
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -60,8 +58,8 @@ class ChatFragment : Fragment() {
             .circleCrop()
             .into(binding.ivProfile)
 
-        viewModel.chatList.observe(viewLifecycleOwner, {
-            messagesAdapter.submitList(it)
+        viewModel.chatList.observe(viewLifecycleOwner, {messagesList->
+            messagesAdapter.submitList(messagesList)
         })
 
         viewModel.errorMessage.observe(viewLifecycleOwner, {
@@ -116,43 +114,6 @@ class ChatFragment : Fragment() {
             }
         }
     }
-
-//    private fun addSwipeListener() {
-//
-//        ItemTouchHelper(object :
-//            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean = true
-//
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                messagesAdapter.showMessageTimeTv()
-//            }
-//
-//            override fun onChildDraw(
-//                c: Canvas,
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                dX: Float,
-//                dY: Float,
-//                actionState: Int,
-//                isCurrentlyActive: Boolean
-//            ) {
-//                super.onChildDraw(
-//                    c,
-//                    recyclerView,
-//                    viewHolder,
-//                    0F,
-//                    0F,
-//                    actionState,
-//                    isCurrentlyActive
-//                )
-//            }
-//
-//        }).attachToRecyclerView(binding.rvMessages)
-//    }
 
     override fun onPause() {
         super.onPause()

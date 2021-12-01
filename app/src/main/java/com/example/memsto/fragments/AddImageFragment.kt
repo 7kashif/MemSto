@@ -79,29 +79,24 @@ class AddImageFragment : Fragment() {
 
     private fun addObservers() {
         viewModel.uploadingProgress.observe(viewLifecycleOwner, {
-            binding.pbImageUploading.progress = it
+            binding.pbUploading.progress = it
         })
 
         viewModel.showUploadingProgress.observe(viewLifecycleOwner, {
             binding.apply {
                 when (it) {
                     is SharedViewModel.Loading.InProgress -> {
-                        pbCustom.isVisible = true
-                        tvUploading.text = getString(R.string.uploading)
-                        tvUploading.isVisible = true
-                        pbImageUploading.isVisible = true
+                        fadeView.isVisible = true
                         btnUploadImage.isEnabled = false
                     }
                     is SharedViewModel.Loading.ErrorOccurred -> {
-                        pbCustom.isVisible = false
-                        tvUploading.text = getString(R.string.error_occurred)
-                        btnUploadImage.isClickable = false
+                        fadeView.isVisible = false
                         Toast.makeText(activity, it.error, Toast.LENGTH_LONG).show()
                     }
                     else -> {
-                        pbCustom.visibility = View.INVISIBLE
-                        tvUploading.text = getString(R.string.uploaded)
+                        fadeView.isVisible = false
                         btnUploadImage.isEnabled = true
+                        Toast.makeText(activity, "Memory uploaded successfully", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -125,21 +120,7 @@ class AddImageFragment : Fragment() {
         val datePicker = DatePickerDialog(
             requireActivity(),
             { _, year, month, dayOfMonth ->
-                val mon = when(month + 1) {
-                    1 -> "Jan"
-                    2 -> "Fab"
-                    3 -> "Mar"
-                    4 -> "Apr"
-                    5 -> "May"
-                    6 -> "Jun"
-                    7 -> "Jul"
-                    8 -> "Aug"
-                    9 -> "Sep"
-                    10 -> "Oct"
-                    11-> "Nov"
-                    else -> "Dec"
-                }
-                val date = "$mon $dayOfMonth, $year"
+                val date = "${Utils.arrayOfMonths[month]} $dayOfMonth, $year"
                 binding.etDate.setText(getString(R.string.set_date, date))
             },
             Calendar.getInstance().get(Calendar.YEAR),
