@@ -15,6 +15,8 @@
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_back.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_cancel.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_chat.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_close.xml" value="0.21770833333333334" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_cross.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_delete.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_download.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/drawable/ic_edit.xml" value="0.21770833333333334" />
@@ -45,6 +47,7 @@
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/drawer_header_layout.xml" value="0.2015625" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/edit_profile_fragment.xml" value="0.22" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/home_fragment.xml" value="0.18" />
+        <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/image_choice_dialog.xml" value="0.25" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/loader_dialog.xml" value="0.2015625" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/logout_dialog.xml" value="0.25" />
         <entry key="..\:/Users/KHAN/Documents/Firebase_Projects/app/src/main/res/layout/memories_list_item.xml" value="0.2015625" />

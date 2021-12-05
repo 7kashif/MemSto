@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.memsto.Utils
 import com.example.memsto.databinding.SigninFragmentBinding
 import com.example.memsto.firebase.FirebaseObject
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +29,7 @@ class LoginFragment : Fragment() {
     ): View {
         binding = SigninFragmentBinding.inflate(inflater)
         addClickListeners()
+        Utils.addBackPressedCallback(this)
 
         FirebaseObject.firebaseAuth.currentUser?.let {
             this.findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())

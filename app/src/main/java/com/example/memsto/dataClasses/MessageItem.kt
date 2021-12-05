@@ -1,7 +1,6 @@
 package com.example.memsto.dataClasses
 
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.ServerTimestamp
 
 data class MessageItem(
     var messageId:String="",

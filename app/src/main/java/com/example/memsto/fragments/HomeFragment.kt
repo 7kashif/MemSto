@@ -193,7 +193,7 @@ class HomeFragment : Fragment() {
             Firebase.auth.signOut()
             dialog.dismiss()
             Toast.makeText(activity, "Logged out successfully.", Toast.LENGTH_LONG).show()
-            findNavController().popBackStack()
+            this.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
         }
 
         dialog.show()

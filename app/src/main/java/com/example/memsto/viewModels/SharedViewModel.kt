@@ -1,6 +1,8 @@
 package com.example.memsto.viewModels
 
 import android.net.Uri
+import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -132,6 +134,24 @@ class SharedViewModel : ViewModel() {
                }
             } catch (e: Exception) {
                 _errorMessage.postValue(e.message.toString())
+            }
+        }
+    }
+
+    fun deleteMemory(memoryItem: MemoryItem) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val imageUri = memoryItem.imageUri.toUri().lastPathSegment.toString()
+                val imageName = imageUri.substring(imageUri.lastIndexOf('/')+1,imageUri.length)
+
+                FirebaseObject.usersReference.document(userFbDocId)
+                    .collection(Utils.MEMORY_ITEMS)
+                    .document(memoryItem.fbDocId)
+                    .delete()
+                    .await()
+                FirebaseObject.storageRef.child("$userId/$imageName").delete().await()
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

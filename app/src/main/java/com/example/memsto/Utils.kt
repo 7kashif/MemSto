@@ -1,11 +1,13 @@
 package com.example.memsto
 
 import android.app.Dialog
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
@@ -22,6 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,6 +44,60 @@ object Utils {
         "Nov",
         "Dec"
     )
+
+    inline fun <T> sdk29AndUp(onSdk29:()->T): T? {
+        return if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q)
+            onSdk29()
+        else null
+    }
+
+    fun savePhotoToExternalStorage(memory: MemoryItem, context: Context): Boolean {
+        var returnValue = true
+        var bitmap: Bitmap?=null
+        val imageCollection = sdk29AndUp {
+            MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        }?: MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
+        val cachePath = File(context.cacheDir,"images")
+        cachePath.mkdir()
+        GlobalScope.launch {
+            val loader = ImageLoader(context)
+            val request = ImageRequest.Builder(context)
+                .data(memory.imageUri)
+                .allowHardware(false)
+                .build()
+            when(loader.execute(request)) {
+                is SuccessResult -> {
+                    val result = (loader.execute(request) as SuccessResult).drawable
+                    bitmap = (result as BitmapDrawable).bitmap
+                }
+                else -> Unit
+            }
+        }.invokeOnCompletion {
+            val contentValue = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, "${memory.memory}.jpg")
+                put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+                put(MediaStore.Images.Media.WIDTH, bitmap?.width)
+                put(MediaStore.Images.Media.HEIGHT, bitmap?.height)
+                put(MediaStore.Images.Media.DATE_ADDED, getDate())
+            }
+            returnValue = try {
+                context.contentResolver.insert(imageCollection,contentValue)?.also {uri->
+                    context.contentResolver.openOutputStream(uri).use {stream->
+                        if(!bitmap?.compress(Bitmap.CompressFormat.JPEG,95,stream)!!)
+                            throw IOException("Could not save image file.")
+                    }
+                }?: throw IOException("Could not create media store collection.")
+                true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
+            }
+
+        }
+        return  returnValue
+    }
+
     fun addBackPressedCallback(fragment: Fragment) {
         fragment.requireActivity().onBackPressedDispatcher.addCallback(fragment.viewLifecycleOwner,
             object : OnBackPressedCallback(true) {

@@ -33,4 +33,7 @@
     <string name="share_memory">Share Memory</string>
     <string name="share">Share</string>
     <string name="loading_image">Loading image…</string>
+    <string name="select_an_option">Select an option</string>
+    <string name="capture_image">Capture Image</string>
+    <string name="from_gallery">Take from gallery</string>
 </resources>

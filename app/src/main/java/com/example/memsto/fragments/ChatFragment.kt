@@ -33,8 +33,8 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = ChatFragmentBinding.inflate(inflater)
-        messagesAdapter = MessagesAdapter(requireContext())
-        binding.rvMessages.scrollToPosition(messagesAdapter.currentList.size - 1)
+        messagesAdapter = MessagesAdapter()
+        binding.rvMessages.scrollToPosition(messagesAdapter.getMessages().size-1)
         addClickListeners()
         setUpChatsRv()
         addObserver()
@@ -58,8 +58,8 @@ class ChatFragment : Fragment() {
             .circleCrop()
             .into(binding.ivProfile)
 
-        viewModel.chatList.observe(viewLifecycleOwner, {messagesList->
-            messagesAdapter.submitList(messagesList)
+        viewModel.chatList.observe(viewLifecycleOwner, {messages->
+            messagesAdapter.differ.submitList(messages)
         })
 
         viewModel.errorMessage.observe(viewLifecycleOwner, {
@@ -87,7 +87,7 @@ class ChatFragment : Fragment() {
 
     private fun addClickListeners() {
         messagesAdapter.onMessageClickListener {
-            Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, it.messageId, Toast.LENGTH_SHORT).show()
         }
 
         binding.ibBack.setOnClickListener {
