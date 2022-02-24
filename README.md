@@ -1,9 +1,18 @@
-# MemSto
-Memsto is a chat app and an online storage place where you can store your photos with a memory and the date when you created that memory.
+<h2 align="center">Memsto</h2>
+<h4 align="center">Share your photos privately on remote server (Firebase). Chat with other in-app users. Share your
+    memories with other users as well as on other platforms.
+</h4>
 
-It is built using Firebase firestore, storage and user authentication.
-Kotlin coroutines, MVVM and material designs.
+<img src="https://user-images.githubusercontent.com/59311205/155558981-02f5f954-90f2-432f-b27f-b96f30fb88dd.jpg"
+    height="60%" width="40%">
 
-You can store your photos online (Firebase storage) with a memory and the date when you created that memory so when you will get back to these photos you will exactly know why
-and when you created that memory.
-You can also chat with other users of the app. The chat feature is implemented using firebase firestore and realtime updates.
+h4>Technologies Used</h4>
+<ul>
+    <li>Android Studio</li>
+    <li>Kotlin</li>
+    <li>Kotlin Coroutines</li>
+    <li>MVVM</li>
+    <li>Firebase</li>
+    <li>Kotlin Coroutines</li>
+    <li>Dagger Hilt</li>
+</ul>
