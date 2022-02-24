@@ -4,7 +4,7 @@
 </h4>
 
 <img src="https://user-images.githubusercontent.com/59311205/155558981-02f5f954-90f2-432f-b27f-b96f30fb88dd.jpg"
-    height="60%" width="40%">
+    height="80%" width="60%">
 
 h4>Technologies Used</h4>
 <ul>
